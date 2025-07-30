@@ -75,7 +75,7 @@ cars.forEach(car => {
     <img src=\"${car.image}\" alt=\"${car.name}\" style=\"width: 100%; border-radius: 6px;\" />
     <h3>${car.name}</h3>
     <p>Price: ${car.price}</p>
-    <a class=\"btn\" href=\"https://wa.me/264812833272?text=I'm%20interested%20in%20renting%20the%20${encodeURIComponent(car.name)}\">Rent on WhatsApp</a>
+    <a class=\"btn\" href=\"https://wa.me/+264812833272?text=I'm%20interested%20in%20renting%20the%20${encodeURIComponent(car.name)}\">Rent on WhatsApp</a>
   `;
   gallery.appendChild(div);
 });
