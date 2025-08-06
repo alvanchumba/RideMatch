@@ -3,16 +3,26 @@
 function transformDriveLink(link) {
   if (!link) return '';
 
-  link = link.trim().replace(/^"|"$/g, ''); // remove surrounding quotes
+  console.log("Original link from sheet:", link); // 👈 DEBUG
+
+  link = link.trim().replace(/^"|"$/g, '');
 
   let match = link.match(/\/file\/d\/(.*?)\/view/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  if (match) {
+    console.log("Matched /file/d/...:", match[1]);
+    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
 
   match = link.match(/open\?id=([a-zA-Z0-9_-]+)/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  if (match) {
+    console.log("Matched open?id=...:", match[1]);
+    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
 
+  console.warn("❌ Failed to extract image ID from link:", link);
   return '';
 }
+
 
 
   function displayCarCard(car) {
