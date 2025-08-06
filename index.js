@@ -39,7 +39,7 @@ function displayCarCard(car) {
 //test display
 function testDisplay() {
   const testCar = {
-    name: "Honda fit (2025)",
+    name: "Honda fit (2024)",
     image: transformDriveLink("https://drive.google.com/open?id=1jy2uyYTH7Ssl15-Mlbu7wN8_-V12Fo2J"),
     price: "N$250/day"
   };
