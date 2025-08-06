@@ -1,22 +1,18 @@
 const gallery = document.getElementById("car-gallery");
 
-// Converts Google Drive share links to direct image links
 function transformDriveLink(link) {
   if (!link) return '';
 
-  console.log("Original link from sheet:", link); // Debug output
+  console.log("Original link from sheet:", link); // Should show your link
 
-  // Trim and remove quotes if any
   link = link.trim().replace(/^"|"$/g, '');
 
-  // Match /file/d/FILE_ID/view pattern
   let match = link.match(/\/file\/d\/(.*?)\/view/);
   if (match) {
     console.log("Matched /file/d/...:", match[1]);
     return `https://drive.google.com/uc?export=view&id=${match[1]}`;
   }
 
-  // Match open?id=FILE_ID pattern
   match = link.match(/open\?id=([a-zA-Z0-9_-]+)/);
   if (match) {
     console.log("Matched open?id=...:", match[1]);
@@ -26,6 +22,7 @@ function transformDriveLink(link) {
   console.warn("❌ Failed to extract image ID from link:", link);
   return '';
 }
+
 
 // Creates and appends a car card to the gallery section
 function displayCarCard(car) {
@@ -39,6 +36,19 @@ function displayCarCard(car) {
   `;
   gallery.appendChild(div);
 }
+//test display
+function testDisplay() {
+  const testCar = {
+    name: "Honda fit (2025)",
+    image: transformDriveLink("https://drive.google.com/open?id=1jy2uyYTH7Ssl15-Mlbu7wN8_-V12Fo2J"),
+    price: "N$250/day"
+  };
+  displayCarCard(testCar);
+}
+
+document.addEventListener('DOMContentLoaded', testDisplay);
+
+
 
 // Fetches CSV data from published Google Sheet, parses, and displays cars
 async function loadCarsFromSheet() {
