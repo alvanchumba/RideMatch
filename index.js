@@ -1,9 +1,20 @@
   const gallery = document.getElementById("car-gallery");
 
   function transformDriveLink(link) {
-    const match = link.match(/\/file\/d\/(.*?)\/view/);
-    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : link;
-  }
+  if (!link) return '';  // handle missing links
+
+  // Match Google Drive URL format 1: /file/d/FILE_ID/view
+  let match = link.match(/\/file\/d\/(.*?)\/view/);
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+
+  // Match Google Drive URL format 2: open?id=FILE_ID
+  match = link.match(/open\?id=([a-zA-Z0-9_-]+)/);
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+
+  // If no match, just return the original link
+  return link;
+}
+
 
   function displayCarCard(car) {
     const div = document.createElement("div");
