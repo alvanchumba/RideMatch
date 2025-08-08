@@ -71,7 +71,7 @@ async function loadCarsFromSheet() {
 
       const carObj = {
         name: `${car['Car Make and Model']} (${car['Year of car']})`,
-        image: transformDriveLink(car['Upload car Photos']),
+        image: transformDriveLink(car['Upload car photos']),
         price: `N$${car['Daily Rental Price (N$)']}/day`
       };
 
