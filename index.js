@@ -2,26 +2,19 @@ const gallery = document.getElementById("car-gallery");
 
 function transformDriveLink(link) {
   if (!link) return '';
-
   link = link.trim().replace(/^"|"$/g, '');
 
-  // Match /file/d/FILE_ID/ optionally followed by /view or params
+  // Match /file/d/FILE_ID/
   let match = link.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) {
-    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
 
   // Match open?id=FILE_ID
   match = link.match(/open\?id=([a-zA-Z0-9_-]+)/);
-  if (match) {
-    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
 
-  console.warn("❌ Failed to extract image ID from link:", link);
+  console.warn("❌ Could not extract Google Drive ID:", link);
   return '';
 }
-
-
 
 // Creates and appends a car card to the gallery section
 function displayCarCard(car) {
@@ -57,25 +50,29 @@ async function loadCarsFromSheet() {
     const response = await fetch(csvUrl);
     const csv = await response.text();
 
-    // Parse CSV rows and columns
     const rows = csv.trim().split('\n').map(row => row.split(','));
-    const headers = rows[0];
+    
+    // Normalize headers → lowercase + no spaces
+    const headers = rows[0].map(h => h.trim().toLowerCase());
     const data = rows.slice(1);
 
-    // Process each car entry
     data.forEach(row => {
       const car = {};
       headers.forEach((header, i) => {
-        car[header.trim()] = row[i] ? row[i].trim() : '';
+        car[header] = row[i] ? row[i].trim() : '';
       });
 
       const carObj = {
-        name: `${car['Car Make and Model']} (${car['Year of car']})`,
-        image: transformDriveLink(car['Upload car photos']),
-        price: `N$${car['Daily Rental Price (N$)']}/day`
+        name: `${car['car make and model']} (${car['year of car']})`,
+        image: transformDriveLink(car['upload car photos']),
+        price: `N$${car['daily rental price (n$)']}/day`
       };
 
-      displayCarCard(carObj);
+      if (carObj.image) {
+        displayCarCard(carObj);
+      } else {
+        console.warn(`🚫 Skipped ${carObj.name} — no valid image link`);
+      }
     });
 
   } catch (err) {
@@ -83,6 +80,5 @@ async function loadCarsFromSheet() {
     gallery.innerHTML = "<p>Couldn't load live cars. Please try again later.</p>";
   }
 }
-
 // Load cars when the page is ready
 document.addEventListener('DOMContentLoaded', loadCarsFromSheet);
