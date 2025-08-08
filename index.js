@@ -63,10 +63,11 @@ async function loadCarsFromSheet() {
       });
 
       const carObj = {
-        name: `${car['Car Make and Model']} (${car['Year of car']})`,
-        image: transformDriveLink(car['Upload car photos']),
-        price: `N$${car['daily rental price (n$)']}/day`
-      };
+       name: `${car['Car Make and Model']} (${car['Year of car']})`,
+       image: car['Public Image Link'] || transformDriveLink(car['upload car photos']),
+       price: `N$${car['Daily Rental Price (N$)']}/day`
+     };
+
 
       if (carObj.image) {
         displayCarCard(carObj);
