@@ -3,25 +3,24 @@ const gallery = document.getElementById("car-gallery");
 function transformDriveLink(link) {
   if (!link) return '';
 
-  console.log("Original link from sheet:", link); // Should show your link
-
   link = link.trim().replace(/^"|"$/g, '');
 
-  let match = link.match(/\/file\/d\/(.*?)\/view/);
+  // Match /file/d/FILE_ID/ optionally followed by /view or params
+  let match = link.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (match) {
-    console.log("Matched /file/d/...:", match[1]);
     return `https://drive.google.com/uc?export=view&id=${match[1]}`;
   }
 
+  // Match open?id=FILE_ID
   match = link.match(/open\?id=([a-zA-Z0-9_-]+)/);
   if (match) {
-    console.log("Matched open?id=...:", match[1]);
     return `https://drive.google.com/uc?export=view&id=${match[1]}`;
   }
 
   console.warn("❌ Failed to extract image ID from link:", link);
   return '';
 }
+
 
 
 // Creates and appends a car card to the gallery section
